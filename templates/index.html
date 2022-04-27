@@ -1,0 +1,250 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+<header class="header">
+
+    <div class="header-1">
+        {% if lan=='hindi' %}
+        <a href="#" class="logo"> <i class="fas fa-book"></i> पुस्तक पाठक </a>
+        {% elif lan=='english' %}
+        <a href="#" class="logo"> <i class="fas fa-book"></i> Pustak Pathak </a>
+        {% endif %}
+
+        <form action="" class="search-form">
+            <input type="search" name="" placeholder="search here... " id="search-box">
+            <label for="search-box" class="fas fa-search"></label>
+        </form>
+
+        <div class="icons">
+            <div id="search-btn" class="fas fa-search"></div>
+            {% if lan=='hindi' %}
+            <a id="user">नमस्कार {{user}}</a>
+            {% elif lan=='english' %}
+            <a id="user">Hello {{user}}</a>
+            {% endif %}
+
+            <div id="login-btn" onclick="location.href='{{url_for('logout')}}'" class="fas fa-user-alt-slash"></div>
+        </div>
+
+    </div>
+
+    <div class="header-2">
+        <nav class="navbar">
+            {%if lan=='hindi' %}
+            <a href="#home">मुख्य</a>
+            <a href="#featured">विशेष पुस्तकें</a>
+            <a href="#arrivals">नयी पुस्तकें</a>
+            {% elif lan=='english' %}
+            <a href="#home">Home</a>
+            <a href="#featured">featured</a>
+            <a href="#arrivals">arrivals</a>
+            {% endif %}
+            {% if session['user']=='admin' and lan=='hindi' %}
+            <a href="{{url_for('userdata')}}">उपभोक्ता सुधारें</a>
+            <a href="{{url_for('imgdata')}}">चित्र सुधारें</a>
+            {% elif session['user']=='admin' and lan=='english' %}
+            <a href="{{url_for('userdata')}}">edit user</a>
+            <a href="{{url_for('imgdata')}}">edit image</a>
+            {% endif %}
+            </nav>
+    </div>
+
+</header>
+
+<nav class="bottom-navbar">
+    <a href="#home" class="fas fa-home"></a>
+    <a href="#featured" class="fas fa-list"></a>
+    <a href="#arrivals" class="fas fa-tags"></a>
+    </nav>
+
+<section class="home" id="home">
+
+    <div class="row">
+
+
+        <div class="content">
+
+            {% if lan=='hindi' %}
+            <h3>पुस्तक</h3>
+            <p>पुस्तकें जो मैं नई भाषाएँं सीखने में उपयोग करता हूँ ,
+            मैं ये पुस्तकें मेरे भिन्न प्रकार की भाषाओं को सीखने के लक्ष्य हेतु उपयोग करता आ रहा हूँ।</p>
+            <a href="#" class="btn">खाेजें</a>
+            {% elif lan=='english' %}
+            <h3>Book</h3>
+            <p>books that I read to learn my languages.
+            I've been using these books to achieve my language learning goal.</p>
+            <a href="#" class="btn">Explore</a>
+            {% endif %}
+        </div>
+
+        <div class="swiper books-slider">
+            <div class="swiper-wrapper">
+
+                {% for b in range(books[0]) %}
+                <a href="#" class="swiper-slide"><img src="static/image/{{books[1][b]['img']}}" alt=""></a>
+                {% endfor %}
+            </div>
+            <img src="static/image/stand.png" class="stand" alt="">
+        </div>
+
+    </div>
+
+</section>
+
+<section class="featured" id="featured">
+    {% if lan=='hindi' %}
+    <h1 class="heading"> <span>विशेष पुस्तकें</span> </h1>
+    {% elif lan=='english' %}
+    <h1 class="heading"> <span>featured books</span> </h1>
+    {% endif %}
+    <div class="swiper featured-slider">
+
+
+        <div class="swiper-wrapper">
+
+            {% for b in range(books[0]) %}
+
+            <div class="swiper-slide box">
+                <div class="icons">
+                    <a href="#" class="fas fa-search"></a>
+                    <a href="#" class="fas fa-heart"></a>
+                    <a href="#" class="fas fa-eye"></a>
+                </div>
+                <div class="image">
+                    <img src="static/image/{{books[1][b]['img']}}" alt="">
+                </div>
+                <div class="content">
+                    {% if lan=='hindi' %}
+                    <a href="{{books[1][b]['url']}}" class="btn">पढ़ें</a>
+                    {% elif lan=='english' %}
+                    <a href="{{books[1][b]['url']}}" class="btn">Read</a>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% endfor %}
+
+
+        </div>
+
+
+
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+
+    </div>
+
+</section>
+
+<section class="newsletter">
+
+    <form action="">
+        <div class="parent">
+        <div class="child"><h3 id="greet">{{greet}} {{user}}</h3></div><div class="child"><img src="static/image/heart.png
+            " width="30px"></div>
+        </div>
+    </form>
+
+</section>
+
+<section class="arrivals" id="arrivals">
+    {% if lan=='hindi' %}
+    <h1 class="heading"> <span>नयीं पुस्तकें</span> </h1>
+    {% elif lan=='english' %}
+    <h1 class="heading"> <span>new arrivals</span> </h1>
+    {% endif %}
+    <div class="swiper arrivals-slider">
+
+        <div class="swiper-wrapper">
+
+            {% for b in range((books[0]//2+1)) %}
+
+            <a href="#" class="swiper-slide box">
+                <div class="image">
+                    <img src="static/image/{{books[1][b]['img']}}" alt="">
+                </div>
+                <div class="content">
+                    {% if lan=='hindi' %}
+                    <h3>नयीं पुस्तकें</h3>
+                    {% elif lan=='english' %}
+                    <h3>new arrivals</h3>
+                    {% endif %}
+
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+            </a>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+    <div class="swiper arrivals-slider">
+
+        <div class="swiper-wrapper">
+
+            {% for b in range((books[0]//2+1),books[0]) %}
+
+            <a href="#" class="swiper-slide box">
+                <div class="image">
+                    <img src="static/image/{{books[1][b]['img']}}" alt="">
+                </div>
+                <div class="content">
+                    {% if lan=='hindi' %}
+                    <h3>नयीं पुस्तकें</h3>
+                    {% elif lan=='english' %}
+                    <h3>new arrivals</h3>
+                    {% endif %}
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+            </a>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="footer">
+
+
+    <div class="share">
+        <a href="#" class="fab fa-facebook-f"></a>
+        <a href="#" class="fab fa-twitter"></a>
+        <a href="#" class="fab fa-instagram"></a>
+        <a href="#" class="fab fa-linkedin"></a>
+        <a href="#" class="fab fa-pinterest"></a>
+    </div>
+
+    {% if lan=='hindi' %}
+    <div class="credit"> निर्माता <span>श्री आर.जे.किंग</span> | सर्वाधिकार सुरक्षित</div>
+    {% elif lan=='english' %}
+    <div class="credit"> created by <span>Mr. Rj King</span> | all rights reserved! </div>
+    {% endif %}
+</section>
+
+<img id="hide" style="display: none">
+
+<div class="loader-container">
+    <img src="static/image/loader-img.gif" alt="">
+</div>
+
+{% endblock %}
+
